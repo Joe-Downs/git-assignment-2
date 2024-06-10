@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 import logging
+import argparse
 
 from random import seed, randrange
 
@@ -10,8 +11,22 @@ def add():
 def subtract():
     return randrange(1000) - randrange(1000)
 
+def setup_cli():
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--debug', action='store_true',
+                        help='Enable extra debugging output')
+    args = parser.parse_args()
+
+    return args
+
 def main():
-    logging.basicConfig(level=logging.INFO,
+    args = setup_cli()
+
+    level = logging.INFO
+    if args.debug:
+        level = logging.DEBUG
+
+    logging.basicConfig(level=level,
                         datefmt='%Y-%m-%d %H:%M:%S',
                         format='%(asctime)s:%(levelname)s: %(message)s')
     seed(0)
